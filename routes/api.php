@@ -47,6 +47,7 @@ Route::get('datapakets/detailpemenang', [DetailpaketController::class, 'getDetai
 
 Route::get('datapakets/penyedia', [PenyediaController::class, 'getallpenyedia']);
 Route::get('datapakets/getpenyedia', [PenyediaController::class, 'getJoinPenyedia']);
+Route::get('datapakets/getwinpro', [PenyediaController::class, 'getDetailpaketWin']);
 
 
 Route::get('datapakets/getdetaildata', [MonitoringController::class, 'getDataDetail']);

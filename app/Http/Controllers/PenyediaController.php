@@ -22,13 +22,29 @@ class PenyediaController extends Controller
         $query = Penyedia::query();
       
         $query->selectRaw('penyedias.id, nama, npwp, notel, alamat, count(*) as jumlah')
-        ->leftJoin('detailpakets', 'detailpakets.idpemenang', '=', 'penyedias.id')
-        ->groupBy('npwp')->orderBy('jumlah', 'desc');
+        ->join('detailpro', 'detailpro.id', '=', 'penyedias.id')
+        ->groupBy('npwp')->orderBy('jumlah', 'DESC');
       
         $result = $query->get();
 
         return [
             'data' => $result
         ];
+    }
+    public function getDetailpaketWin(Request $request) {
+        $query = Penyedia::query();
+        if ($id = $request->input('id')) {
+            $query->selectRaw('datapakets.kode_rup, datapakets.satuan_kerja, 
+            datapakets.nama_paket, datapakets.metode_pengadaan, 
+            datapakets.nilai_kontrak, datapakets.tahun')
+                ->join('detailpro', 'detailpro.id', '=', 'penyedias.id')
+                ->join('datapakets','datapakets.kode_rup', '=', 'detailpro.kode_rup')
+                ->whereRAW('penyedias.id =?', $id);
+        }
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];        
+
     }
 }
