@@ -79,18 +79,19 @@ class DatapaketController extends Controller
         ];
     }
 
-    public function getdatametode(Request $request) {    
+    public function getdatametode(Request $request)
+    {
         $query = Datapaket::query();
         if ($tahun = $request->input('tahun')) {
             $query->selectRaw('metode_pengadaan, url, count(*) as jumlah, sum(nilai_kontrak) as total')
                 ->whereRAW('tahun =?', $tahun)
-                ->groupBy('metode_pengadaan','url');
+                ->groupBy('metode_pengadaan', 'url');
         }
 
         if ($sk = $request->input('sk')) {
             $query->selectRaw('metode_pengadaan, url, count(*) as jumlah, sum(nilai_kontrak) as total')
                 ->whereRAW('satuan_kerja =?', $sk)
-                ->groupBy('metode_pengadaan','url');
+                ->groupBy('metode_pengadaan', 'url');
         }
 
 
@@ -124,33 +125,154 @@ class DatapaketController extends Controller
         return [
             'data' => $result
         ];
+    }
 
-        /* if ($s = $request->input('s')) {
-            $query->whereRaw("nama_paket LIKE '%" . $s . "%'")
-                ->orWhereRaw("satuan_kerja LIKE '%" . $s . "%'")
-                ->orWhereRaw("metode_pengadaan LIKE '%" . $s . "%' ");
-        }/*/
-        // if ($s = $request->input('s')) {
+    public function getSwakelola(Request $request)
+    {
+        $query = Datapaket::query();
 
-        //   }
-        //SELECT jenis, COUNT(*) as jumlah, SUM(nilai_kontrak) as total FROM datapakets GROUP BY jenis;
-        //  SomeResource::collection($models)->groupBy('group');
-        /*$data = Datapaket::select(
+        if ($tahun = $request->input('tahun')) {
 
-                            DB::raw("jenis, COUNT(*) as jumlah"),
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "Swakelola"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+        }
 
-                            DB::raw("SUM(nilai_kontrak) as total")
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
 
-                            )
+    public function getSeleksi(Request $request)
+    {
+        $query = Datapaket::query();
 
-                          //  ->orderBy('created_at')
+        if ($tahun = $request->input('tahun')) {
 
-                            ->groupBy(DB::raw("jenis"))
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "Seleksi"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+        }
 
-                            ->get();
-  
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
 
-        dd($data);
-        */
+    public function getTender(Request $request)
+    {
+        $query = Datapaket::query();
+
+        if ($tahun = $request->input('tahun')) {
+
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "Tender"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+        }
+
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
+
+    public function getKecuali(Request $request)
+    {
+        $query = Datapaket::query();
+
+        if ($tahun = $request->input('tahun')) {
+
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "Pengecualian"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+        }
+
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
+
+    public function getPl(Request $request)
+    {
+        $query = Datapaket::query();
+
+        if ($tahun = $request->input('tahun')) {
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "Penunjukan Langsung"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+        }
+
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
+
+    
+    public function getPurchas(Request $request)
+    {
+        $query = Datapaket::query();
+
+        if ($tahun = $request->input('tahun')) {
+
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "E-Purchasing"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+
+       
+        }
+
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
+
+    public function getPengadanLangsung(Request $request)
+    {
+        $query = Datapaket::query();
+
+        if ($tahun = $request->input('tahun')) {
+
+            $query->selectRaw('MONTHNAME(datapakets.tgl_kontrak) as bulan,MONTH(datapakets.tgl_kontrak) as bulanangka, datapakets.metode_pengadaan as metode, count(*) as jumlah,
+            SUM(monitorings.pagu_urp) as pagu, SUM(monitorings.nilai_kontrak) as nilai_kontrak, SUM(monitorings.nilai_hps) as nilai_hps')
+                ->join('monitorings', 'monitorings.kode_rup', '=', 'datapakets.kode_rup')
+                ->whereRAW('datapakets.metode_pengadaan = "Pengadaan Langsung"')
+                ->whereRAW('datapakets.tahun =?', $tahun)
+                ->groupByRaw('MONTHNAME(datapakets.tgl_kontrak)')
+                ->orderBy('bulanangka', 'ASC');
+        }
+
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
     }
 }
