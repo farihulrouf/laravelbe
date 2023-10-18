@@ -29,9 +29,7 @@ class DatapaketController extends Controller
         if ($tahun = $request->input('tahun')) {
             $query->whereRAW('tahun =?', $tahun);
         }
-        if ($jenis = $request->input('jenis')) {
-            $query->whereRAW('jenis =?', $jenis);
-        }
+       
         if ($sk = $request->input('sk')) {
             $query->whereRAW('satuan_kerja =?', $sk);
         }
@@ -56,12 +54,13 @@ class DatapaketController extends Controller
     public function getData(Request $request)
     {
         $query = Datapaket::query();
+        if ($s = $request->input('s')) {
+            $query->whereRaw("nama_paket LIKE '%" . $s . "%'");
+        }
         if ($tahun = $request->input('tahun')) {
             $query->whereRAW('tahun =?', $tahun);
         }
-        if ($jenis = $request->input('jenis')) {
-            $query->whereRAW('jenis =?', $jenis);
-        }
+      
         if ($satuan = $request->input('satuan')) {
             $query->whereRAW('satuan_kerja =?', $satuan);
         }

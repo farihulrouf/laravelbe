@@ -45,6 +45,10 @@ class MonitoringController extends Controller
             'data' => $result
         ];
     }
+
+    public function getdataMonitor() {
+        
+    }
    
 
 }

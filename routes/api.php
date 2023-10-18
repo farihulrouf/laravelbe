@@ -4,6 +4,7 @@ use App\Http\Controllers\DatapaketController;
 use App\Http\Controllers\DetailpaketController;
 use App\Http\Controllers\PenyediaController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\DetailproController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
+| routes are loadedcaridata by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
@@ -30,6 +31,9 @@ Route::get('datapakets/getpl', [DatapaketController::class, 'getPl']);
 Route::get('datapakets/getkecuali', [DatapaketController::class, 'getKecuali']);
 Route::get('datapakets/getender', [DatapaketController::class, 'getTender']);
 Route::get('datapakets/getseleksi', [DatapaketController::class, 'getSeleksi']);
+
+
+Route::post('datapakets/postdata', [DetailproController::class, 'SimpanData']);
 
 
 
