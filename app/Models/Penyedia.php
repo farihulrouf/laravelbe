@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Penyedia extends Model
 {
     use HasFactory;
+    protected $fillable = ['npwp', 'nama','alamat','notel']; 
 }

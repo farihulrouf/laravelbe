@@ -14,7 +14,7 @@ class DetailproController extends Controller
     public function SimpanData(Request $request)
     {
         $validator = Validator::make($request->all(), [
-        
+
             'kode_rup' => 'required',
             'id' => 'required'
         ]);
@@ -29,7 +29,7 @@ class DetailproController extends Controller
 
         $post = Detailpro::create([
             'kode_rup' => $request->get('kode_rup'),
-            
+
             'id' => $request->get('id'),
         ]);
         return response()->json([
@@ -39,4 +39,39 @@ class DetailproController extends Controller
         ]);
     }
 
+
+    public function HapusData(Request $request)
+    {
+
+        $query = Detailpro::query();
+        if ($kode_rup = $request->input('kode_rup')) {
+            $query->Detailpro::where('kode_rup', $kode_rup)->firstorfail()->delete();
+        }
+
+        return response()->json([
+            'message' => 'Post created successfully.',
+            'success' => true
+        ]);
+    }
+
+
+    public function delete(Request $request)
+    {
+        $kode = $request->input('kode_rup');
+
+        $barang = Detailpro::where('kode_rup', $kode)->get();
+
+        if (!$barang->isEmpty()) {
+            Detailpro::where('kode_rup', $kode)->delete();
+            return response()->json([
+                'message' => 'Post created successfully.',
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'failed deleted.',
+                'success' => false
+            ]);
+        }
+    }
 }

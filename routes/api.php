@@ -35,14 +35,9 @@ Route::get('datapakets/getseleksi', [DatapaketController::class, 'getSeleksi']);
 
 Route::post('datapakets/postdata', [DetailproController::class, 'SimpanData']);
 
+Route::post('datapakets/postdata',[DetailproController::class,'HapusData']);
 
-
-
-
-
-
-
-
+Route::delete('datapakets/postdatas',[DetailproController::class,'delete']);
 
 //Detail controller
 
@@ -52,6 +47,8 @@ Route::get('datapakets/detailpemenang', [DetailpaketController::class, 'getDetai
 Route::get('datapakets/penyedia', [PenyediaController::class, 'getallpenyedia']);
 Route::get('datapakets/getpenyedia', [PenyediaController::class, 'getJoinPenyedia']);
 Route::get('datapakets/getwinpro', [PenyediaController::class, 'getDetailpaketWin']);
+Route::post('datapakets/penyedia', [PenyediaController::class, 'SimpanPenyedia']);
+Route::delete('datapakets/penyedia',[PenyediaController::class,'hapusPenyedia']);
 
 
 Route::get('datapakets/getdetaildata', [MonitoringController::class, 'getDataDetail']);
