@@ -7,7 +7,7 @@ use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\DetailproController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +18,17 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group([
+  'middleware' => 'api',
+  'prefix' => 'auth'
 
+], function ($router) {
+  Route::post('/login', [AuthController::class, 'login']);
+  Route::post('/register', [AuthController::class, 'register']);
+  Route::post('/logout', [AuthController::class, 'logout']);
+  Route::post('/refresh', [AuthController::class, 'refresh']);
+  Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+});
 Route::get('datapakets/getall', [DatapaketController::class, 'getall']);
 Route::post('datapakets/getall', [DatapaketController::class, 'cari']);
 Route::get('datapakets/getstatic', [DatapaketController::class, 'getStatistic']);
@@ -35,7 +45,7 @@ Route::get('datapakets/getseleksi', [DatapaketController::class, 'getSeleksi']);
 
 Route::post('datapakets/postdata', [DetailproController::class, 'SimpanData']);
 
-Route::post('datapakets/postdata',[DetailproController::class,'HapusData']);
+Route::post('datapakets/postdatas',[DetailproController::class,'HapusData']);
 
 Route::delete('datapakets/postdatas',[DetailproController::class,'delete']);
 

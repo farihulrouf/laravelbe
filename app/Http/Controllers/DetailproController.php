@@ -27,9 +27,9 @@ class DetailproController extends Controller
             ]);
         }
 
+
         $post = Detailpro::create([
             'kode_rup' => $request->get('kode_rup'),
-
             'id' => $request->get('id'),
         ]);
         return response()->json([

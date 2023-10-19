@@ -82,7 +82,7 @@ class PenyediaController extends Controller
         ]);
     }
 
-    
+
     public function hapusPenyedia(Request $request)
     {
         $id = $request->input('id');
