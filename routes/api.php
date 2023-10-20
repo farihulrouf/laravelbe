@@ -42,6 +42,10 @@ Route::get('datapakets/getkecuali', [DatapaketController::class, 'getKecuali']);
 Route::get('datapakets/getender', [DatapaketController::class, 'getTender']);
 Route::get('datapakets/getseleksi', [DatapaketController::class, 'getSeleksi']);
 
+Route::post('datapakets/datakontrak', [DatapaketController::class, 'SimpanDatakontrak']);
+
+Route::delete('datapakets/hapuskontrak', [DatapaketController::class, 'HapusDataKontrak']);
+
 
 Route::post('datapakets/postdata', [DetailproController::class, 'SimpanData']);
 
@@ -62,6 +66,8 @@ Route::delete('datapakets/penyedia',[PenyediaController::class,'hapusPenyedia'])
 
 
 Route::get('datapakets/getdetaildata', [MonitoringController::class, 'getDataDetail']);
+
+Route::get('datapakets/getdatamonitor', [MonitoringController::class, 'getDataAllMonitor']);
   //
 //
 /*

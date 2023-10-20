@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Datapaket;
 
+use App\Http\Resources\DatapaketResource;
+use Illuminate\Support\Facades\Validator;
 class DatapaketController extends Controller
 {
     public function getall()
@@ -273,5 +275,76 @@ class DatapaketController extends Controller
         return [
             'data' => $result
         ];
+    }
+
+    public function SimpanDatakontrak(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'kode_rup' => 'required',
+            'nama_paket' => 'required',
+            'satuan_kerja' => 'required',
+            'metode_pengadaan' =>'required',
+          
+            'pradipa' => 'required',
+            'tgl_kontrak' => 'required',
+            'nilai_kontrak' => 'required',
+            'awal_pelaksanaan' => 'required',
+            'akhir_pelaksanaan' => 'required',
+            'progress' => 'required',
+            'tahun' => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => [],
+                'message' => $validator->errors(),
+                'success' => false
+            ]);
+        }
+
+
+        $post = Datapaket::create([
+            'kode_rup' => $request->get('kode_rup'),
+            'nama_paket' => $request->get('nama_paket'),
+            'satuan_kerja' =>  $request->get('satuan_kerja'),
+            'metode_pengadaan' => $request->get('metode_pengadaan'),
+            'pdn' =>  $request->get('pdn'),
+            'umk' =>  $request->get('umk'),
+            'pradipa' =>  $request->get('pradipa'),
+            'tgl_kontrak' =>  $request->get('tgl_kontrak'),
+            'nilai_kontrak' =>  $request->get('nilai_kontrak'),
+            'awal_pelaksanaan' =>  $request->get('awal_pelaksanaan'),
+            'akhir_pelaksanaan' =>  $request->get('akhir_pelaksanaan'),
+            'progress' =>  $request->get('progress'),
+            'tahun' =>  $request->get('tahun'),
+            
+        ]);
+        return response()->json([
+            'data' => new DatapaketResource($post),
+            'message' => 'Post created successfully.',
+            'success' => true
+        ]);
+    }
+
+    public function HapusDataKontrak(Request $request)
+    {
+
+        $kode = $request->input('kode_rup');
+
+        $barang = Datapaket::where('kode_rup', $kode)->get();
+
+        if (!$barang->isEmpty()) {
+            Datapaket::where('kode_rup', $kode)->delete();
+            return response()->json([
+                'message' => 'deleted successfully.',
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'failed deleted.',
+                'success' => false
+            ]);
+        }
     }
 }
