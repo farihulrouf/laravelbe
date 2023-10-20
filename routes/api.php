@@ -66,6 +66,8 @@ Route::delete('datapakets/penyedia',[PenyediaController::class,'hapusPenyedia'])
 
 
 Route::get('datapakets/getdetaildata', [MonitoringController::class, 'getDataDetail']);
+Route::post('datapakets/simpanmonitor', [MonitoringController::class, 'SimpanDataMonitor']);
+Route::delete('datapakets/delemonitoring',[MonitoringController::class,'HapusDataMonitor']);
 
 Route::get('datapakets/getdatamonitor', [MonitoringController::class, 'getDataAllMonitor']);
   //

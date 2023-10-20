@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Monitoring;
 
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\DataMonitorResource;
 use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
@@ -70,9 +72,76 @@ class MonitoringController extends Controller
             'data' => $result
         ];
     }
+    public function SimpanDataMonitor(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'kode_rup' => 'required',
+            'nama_paket' => 'required',
+            'satuan_kerja' => 'required',
+            'metode_pengadaan' =>'required',
+            'jenis_pengadaan' => 'required',
+            'tahapan' => 'required',
+            'status_paket' => 'required',
+            'pagu_urp' => 'required',
+            'nilai_kontrak' => 'required',
+            'nilai_hps' => 'required',
+            'efisiensi' => 'required',
+            'tahun' => 'required',
 
-    public function getdataMonitor() {
-        
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => [],
+                'message' => $validator->errors(),
+                'success' => false
+            ]);
+        }
+
+
+        $post = Monitoring::create([
+            'kode_rup' => $request->get('kode_rup'),
+            'nama_paket' => $request->get('nama_paket'),
+            'satuan_kerja' =>  $request->get('satuan_kerja'),
+            'metode_pengadaan' => $request->get('metode_pengadaan'),
+            'jenis_pengadaan' => $request->get('jenis_pengadaan'),
+            'nilai_hps' =>  $request->get('nilai_hps'),
+            'nilai_kontrak' =>  $request->get('nilai_kontrak'),
+            'efisiensi' =>  $request->get('efisiensi'),
+            'status_paket' =>  $request->get('status_paket'),
+            'pagu_urp' =>  $request->get('pagu_urp'),
+            'tahun' =>  $request->get('tahun'),
+            'tahapan' =>  $request->get('tahapan'),
+            'pdn' =>  $request->get('pdn'),
+            'umk' =>  $request->get('umk'),
+            
+        ]);
+        return response()->json([
+            'data' => new DataMonitorResource($post),
+            'message' => 'Post created successfully.',
+            'success' => true
+        ]);
+    }
+    public function HapusDataMonitor(Request $request)
+    {
+
+        $kode = $request->input('kode_rup');
+
+        $barang = Monitoring::where('kode_rup', $kode)->get();
+
+        if (!$barang->isEmpty()) {
+            Monitoring::where('kode_rup', $kode)->delete();
+            return response()->json([
+                'message' => 'deleted successfully.',
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'failed deleted.',
+                'success' => false
+            ]);
+        }
     }
    
 
