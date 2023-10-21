@@ -322,7 +322,7 @@ class DatapaketController extends Controller
         ]);
         return response()->json([
             'data' => new DatapaketResource($post),
-            'message' => 'Post created successfully.',
+            'message' => 'success',
             'success' => true
         ]);
     }

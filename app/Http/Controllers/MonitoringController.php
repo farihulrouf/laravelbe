@@ -119,7 +119,7 @@ class MonitoringController extends Controller
         ]);
         return response()->json([
             'data' => new DataMonitorResource($post),
-            'message' => 'Post created successfully.',
+            'message' => 'success',
             'success' => true
         ]);
     }
