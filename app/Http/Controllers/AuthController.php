@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -115,6 +116,35 @@ class AuthController extends Controller
             //'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
         ]);
+    }
+
+
+    public function updateUser(Request $request, $id) {
+
+        //validate data
+        $this->validate($request, [
+            'name'              => 'required',
+            'email'             => 'required',
+            'password'          => 'required'
+        ]);
+
+        //update user info in the database
+        $user = User::find($id);
+        $user->name        =   $request->name;
+        $user->email             =   $request->email;
+        $user->password          =   Hash::make($request->password);
+
+
+        if($user->update()){
+            $message =  'Updated Successfully!';
+        }else{
+            $message =  'Update Failed.';
+        }
+        $response = [
+            'msg' => $message,
+            'users' => $user
+        ];
+        return response()->json($response, 201);
     }
 
     
