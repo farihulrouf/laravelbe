@@ -70,6 +70,11 @@ Route::post('datapakets/simpanmonitor', [MonitoringController::class, 'SimpanDat
 Route::delete('datapakets/delemonitoring',[MonitoringController::class,'HapusDataMonitor']);
 
 Route::get('datapakets/getdatamonitor', [MonitoringController::class, 'getDataAllMonitor']);
+
+Route::get('datapakets/efisiensi', [MonitoringController::class, 'HitungEfisiensi']);
+Route::get('datapakets/efisiensihps', [MonitoringController::class, 'HitungHpsKontrak']);
+
+
   //
 //
 /*

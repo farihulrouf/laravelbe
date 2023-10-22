@@ -143,6 +143,42 @@ class MonitoringController extends Controller
             ]);
         }
     }
-   
+    public function HitungEfisiensi(Request $request) {
+        $query = Monitoring::query();
+        if ($tahun = $request->input('tahun')) {
+            //sum(pagu_urp) as total_pagu, sum(nilai_kontrak) as total_kontrak, (SUM(pagu_urp)-SUM(nilai_kontrak)) as result
+            $query->selectRaw('sum(pagu_urp) as total_pagu, sum(nilai_kontrak) as total_kontrak, (SUM(pagu_urp)-SUM(nilai_kontrak)) as result')
+                ->whereRAW('tahun =?', $tahun);
+        }
 
+        if ($sk = $request->input('sk')) {
+            $query->selectRaw('sum(pagu_urp) as total_pagu, sum(nilai_kontrak) as total_kontrak, (SUM(pagu_urp)-SUM(nilai_kontrak)) as result')
+                ->whereRAW('satuan_kerja =?', $sk);
+        }
+        
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
+
+
+    public function HitungHpsKontrak(Request $request) {
+        $query = Monitoring::query();
+        if ($tahun = $request->input('tahun')) {
+            //sum(pagu_urp) as total_pagu, sum(nilai_kontrak) as total_kontrak, (SUM(pagu_urp)-SUM(nilai_kontrak)) as result
+            $query->selectRaw('sum(nilai_hps) as total_hps, sum(nilai_kontrak) as total_kontrak, (SUM(nilai_hps)-SUM(nilai_kontrak)) as result')
+                ->whereRAW('tahun =?', $tahun);
+        }
+
+        if ($sk = $request->input('sk')) {
+            $query->selectRaw('sum(nilai_hps) as total_hps, sum(nilai_kontrak) as total_kontrak, (SUM(nilai_hps)-SUM(nilai_kontrak)) as result')
+                ->whereRAW('satuan_kerja =?', $sk);
+        }
+        
+        $result = $query->get();
+        return [
+            'data' => $result
+        ];
+    }
 }
